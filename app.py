@@ -75,7 +75,7 @@ st.plotly_chart(px.choropleth(winner_counts, locations="Country", locationmode="
                               title="Peta Kemenangan Piala Dunia"), use_container_width=True)
 
 # Download sebagai CSV
-st.subheader("⬇️ Unduh Data yang Telah Difilter")
+st.subheader("⬇️ Unduh Data ke Excel")
 @st.cache_data
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
