@@ -9,8 +9,8 @@ from io import BytesIO
 import json
 
 # Konfigurasi Streamlit
-st.set_page_config(page_title="Dashboard Interaktif Piala Dunia", layout="wide")
-st.title("\u26bd\ufe0f Dashboard Interaktif Piala Dunia FIFA")
+st.set_page_config(page_title="Piala Dunia", layout="wide")
+st.title("\u26bd\ufe0fPiala Dunia FIFA")
 
 # Autentikasi Google Sheets dari secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
