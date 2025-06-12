@@ -29,7 +29,7 @@ df['QualifiedTeams'] = pd.to_numeric(df['QualifiedTeams'], errors='coerce')
 df['Year'] = pd.to_numeric(df['Year'], errors='coerce')
 
 # Sidebar filter
-st.sidebar.header("\ud83d\udd0d Filter")
+st.sidebar.header("🔍 Filter")
 year_range = st.sidebar.slider("Tahun", int(df['Year'].min()), int(df['Year'].max()), (int(df['Year'].min()), int(df['Year'].max())))
 countries = st.sidebar.multiselect("Negara Pemenang", df['Winner'].dropna().unique(), default=list(df['Winner'].dropna().unique()))
 
@@ -43,43 +43,39 @@ st.sidebar.metric("Jumlah Penonton Tertinggi", f"{df_filtered['Attendance'].max(
 st.sidebar.metric("Jumlah Pertandingan Terbanyak", f"{df_filtered['MatchesPlayed'].max():,.0f}")
 
 # Tabel interaktif & editable
-st.subheader("\u270f\ufe0f Edit Data Langsung")
+st.subheader("✏️ Edit Data Langsung")
 edited_df = st.data_editor(df_filtered, use_container_width=True, num_rows="dynamic")
 
-if st.button("\ud83d\udcc5 Simpan Perubahan ke Google Sheets"):
+if st.button("💾 Simpan Perubahan ke Google Sheets"):
     set_with_dataframe(sheet, edited_df)
     st.success("Data berhasil diperbarui di Google Sheets!")
 
 # Grafik
-def line_chart(title, x, y, color):
-    return px.line(df_filtered, x=x, y=y, markers=True, color_discrete_sequence=[color], title=title)
+st.subheader("⚽ Jumlah Gol")
+st.plotly_chart(px.line(df_filtered, x='Year', y='GoalsScored', markers=True, title='Jumlah Gol dari Waktu ke Waktu'), use_container_width=True)
 
-st.subheader("\u26bd Jumlah Gol")
-st.plotly_chart(line_chart("Jumlah Gol dari Waktu ke Waktu", 'Year', 'GoalsScored', 'blue'), use_container_width=True)
+st.subheader("📅 Jumlah Pertandingan")
+st.plotly_chart(px.line(df_filtered, x='Year', y='MatchesPlayed', markers=True, color_discrete_sequence=['orange'], title='Jumlah Pertandingan'), use_container_width=True)
 
-st.subheader("\ud83d\uddd5 Jumlah Pertandingan")
-st.plotly_chart(line_chart("Jumlah Pertandingan", 'Year', 'MatchesPlayed', 'orange'), use_container_width=True)
+st.subheader("👥 Jumlah Tim Lolos")
+st.plotly_chart(px.line(df_filtered, x='Year', y='QualifiedTeams', markers=True, color_discrete_sequence=['green'], title='Jumlah Tim yang Lolos'), use_container_width=True)
 
-st.subheader("\ud83d\udc65 Jumlah Tim Lolos")
-st.plotly_chart(line_chart("Jumlah Tim yang Lolos", 'Year', 'QualifiedTeams', 'green'), use_container_width=True)
+st.subheader("👁️‍🗨️ Jumlah Penonton")
+st.plotly_chart(px.line(df_filtered, x='Year', y='Attendance', markers=True, color_discrete_sequence=['red'], title='Jumlah Penonton'), use_container_width=True)
 
-st.subheader("\ud83d\udc41\ufe0f Jumlah Penonton")
-st.plotly_chart(line_chart("Jumlah Penonton", 'Year', 'Attendance', 'red'), use_container_width=True)
-
-# Frekuensi kemenangan
-st.subheader("\ud83c\udfc6 Frekuensi Kemenangan Negara")
+st.subheader("🏆 Frekuensi Kemenangan Negara")
 winner_counts = df_filtered['Winner'].value_counts().reset_index()
 winner_counts.columns = ['Country', 'Wins']
 st.plotly_chart(px.bar(winner_counts, x='Wins', y='Country', orientation='h', color='Country', title='Jumlah Kemenangan per Negara'), use_container_width=True)
 
-# Choropleth map
-st.subheader("\ud83c\udf0d Peta Negara Pemenang")
+# Choropleth map untuk visualisasi negara pemenang
+st.subheader("🌍 Peta Negara Pemenang")
 st.plotly_chart(px.choropleth(winner_counts, locations="Country", locationmode="country names",
                               color="Wins", color_continuous_scale="Viridis",
                               title="Peta Kemenangan Piala Dunia"), use_container_width=True)
 
 # Download sebagai CSV
-st.subheader("\u2b07\ufe0f Unduh Data yang Telah Difilter")
+st.subheader("⬇️ Unduh Data yang Telah Difilter")
 @st.cache_data
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
