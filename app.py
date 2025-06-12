@@ -45,7 +45,7 @@ st.sidebar.metric("Jumlah Pertandingan Terbanyak", f"{df_filtered['MatchesPlayed
 # Tabel interaktif & editable
 st.subheader("Data Pemenang Piala Dunia")
 edited_df = st.data_editor(df_filtered, use_container_width=True, num_rows="dynamic")
-final_df = edited_df[~edited_df["Hapus"]].drop(columns=["Hapus"])
+
 if st.button("💾 Simpan Perubahan ke Google Sheets"):
     set_with_dataframe(sheet, edited_df)
     st.success("Data berhasil diperbarui di Google Sheets!")
