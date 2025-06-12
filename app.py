@@ -43,7 +43,7 @@ st.sidebar.metric("Jumlah Penonton Tertinggi", f"{df_filtered['Attendance'].max(
 st.sidebar.metric("Jumlah Pertandingan Terbanyak", f"{df_filtered['MatchesPlayed'].max():,.0f}")
 
 # Tabel interaktif & editable
-st.subheader("✏️ Edit Data Langsung")
+st.subheader("Data Peserta Piala Dunia")
 edited_df = st.data_editor(df_filtered, use_container_width=True, num_rows="dynamic")
 
 if st.button("💾 Simpan Perubahan ke Google Sheets"):
